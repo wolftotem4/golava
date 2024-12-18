@@ -1,0 +1,31 @@
+{{ define "home/index.tmpl" }}
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{.app.name}}</title>
+<link rel="icon" href="{{url "assets/images/logo.svg"}}" type="image/svg+xml">
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-orange-200">
+<div class="container mx-auto p-4" style="margin-top:200px">
+ <h1 class="flex items-center justify-center flex-row text-4xl font-bold text-red-500">
+  <img class="block" src="{{url "assets/images/logo.svg"}}" width="50" height="50" alt="">
+  <span class="block p-4"><a href="{{url "/"}}">Golava</a></span>
+ </h1>
+ <main>
+  <p class="text-center">An enhanced framework which is based on Gin.</p>
+ </main>
+ <nav class="flex item-center justify-center flex-row">
+  <a class="inline-block m-4 rounded-full p-3 bg-orange-700 text-white font-bold" href="https://github.com/wolftotem4/golava">GITHUB</a>
+  {{if .auth.Check}}
+   <a class="inline-block m-4 rounded-full p-3 bg-orange-700 text-white font-bold" href="{{url "logout"}}">LOGOUT</a>
+  {{else}}
+   <a class="inline-block m-4 rounded-full p-3 bg-orange-700 text-white font-bold" href="{{url "login"}}">LOGIN</a>
+  {{end}}
+ </nav>
+</div>
+</body>
+</html>
+{{ end }}
