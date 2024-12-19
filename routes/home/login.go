@@ -36,7 +36,7 @@ func SubmitLogin(c *gin.Context) {
 	}
 
 	credentials := map[string]interface{}{
-		"name":     form.Username,
+		"username": form.Username,
 		"password": form.Password,
 	}
 

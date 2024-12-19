@@ -11,6 +11,7 @@ import (
 	"strings"
 	"time"
 
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
 	"github.com/joho/godotenv"
 	"github.com/wolftotem4/golava-core/cookie"
@@ -19,9 +20,8 @@ import (
 	"github.com/wolftotem4/golava-core/hashing"
 	"github.com/wolftotem4/golava-core/router"
 	"github.com/wolftotem4/golava-core/session"
-	"github.com/wolftotem4/golava-core/session/sqlite"
+	"github.com/wolftotem4/golava-core/session/mysql"
 	"github.com/wolftotem4/golava/internal/app"
-	_ "modernc.org/sqlite"
 )
 
 func InitApp(ctx context.Context) (*app.App, error) {
@@ -150,7 +150,7 @@ func initSession(db *sqlx.DB) *session.SessionFactory {
 		Name:     sessionName,
 		Lifetime: getSessionLifetime(),
 		HttpOnly: httpOnly,
-		Handler: &sqlite.SqliteSessionHandler{
+		Handler: &mysql.MySQLSessionHandler{
 			DB: db.DB,
 		},
 	}

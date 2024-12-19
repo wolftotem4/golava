@@ -27,7 +27,7 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	row, err := app.DB.QueryContext(c, "SELECT * FROM users WHERE name = ?", form.Username)
+	row, err := app.DB.QueryContext(c, app.DB.Rebind("SELECT * FROM users WHERE username = ?"), form.Username)
 	if err != nil {
 		instance.Session.Store.FlashInput(form)
 		c.Error(err)
@@ -48,12 +48,11 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	_, err = app.DB.ExecContext(c, "INSERT INTO users (name, password) VALUES (?, ?)", form.Username, hash)
+	_, err = app.DB.ExecContext(c, app.DB.Rebind("INSERT INTO users (username, password) VALUES (?, ?)"), form.Username, hash)
 	if err != nil {
 		c.Error(err)
 		return
 	}
 
-	instance.Session.Store.Flash("alert", "You have been registered successfully")
-	c.Redirect(http.StatusSeeOther, app.Router.URL("/").String())
+	c.Redirect(http.StatusSeeOther, app.Router.URL("login").String())
 }
