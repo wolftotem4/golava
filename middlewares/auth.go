@@ -30,7 +30,7 @@ func WebAuth(c *gin.Context) {
 			Hasher:        app.Hashing,
 			Table:         "users",
 			DB:            app.DB,
-			ConstructUser: func() auth.Authenticatable { return &generic.GenericUser{} },
+			ConstructUser: func() auth.Authenticatable { return &generic.User{} },
 		},
 
 		Request: c.Request,

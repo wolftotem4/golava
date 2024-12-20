@@ -13,11 +13,11 @@ import (
 
 func SubmitLogout(ctx *gin.Context) {
 	var (
-		instance = instance.MustGetInstance(ctx)
-		app      = instance.App.(*app.App)
+		i   = instance.MustGetInstance(ctx)
+		app = i.App.(*app.App)
 	)
 
-	statefulGuard, ok := instance.Auth.(auth.StatefulGuard)
+	statefulGuard, ok := i.Auth.(auth.StatefulGuard)
 	if !ok {
 		ctx.Error(errors.New("auth does not implement StatefulGuard"))
 		return
@@ -29,14 +29,14 @@ func SubmitLogout(ctx *gin.Context) {
 		return
 	}
 
-	instance.Session.Store.Invalidate(ctx)
-	instance.Session.Store.RegenerateToken()
+	i.Session.Store.Invalidate(ctx)
+	i.Session.Store.RegenerateToken()
 
 	app.Cookie.Encryption().Set(
-		instance.Session.GetMigrateName(),
-		instance.Session.Store.ID,
-		cookie.WithMaxAge(int(instance.Session.Lifetime)),
+		i.Session.GetMigrateName(),
+		i.Session.Store.ID,
+		cookie.WithMaxAge(int(i.Session.Lifetime)),
 	)
 
-	instance.Redirector.Redirect(http.StatusSeeOther, "/")
+	i.Redirector.Redirect(http.StatusSeeOther, "/")
 }

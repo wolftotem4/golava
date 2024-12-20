@@ -19,7 +19,7 @@ import (
 	"github.com/wolftotem4/golava-core/hashing"
 	"github.com/wolftotem4/golava-core/router"
 	"github.com/wolftotem4/golava-core/session"
-	"github.com/wolftotem4/golava-core/session/sqlite"
+	sess "github.com/wolftotem4/golava-core/session/sqlite"
 	"github.com/wolftotem4/golava/internal/app"
 	_ "modernc.org/sqlite"
 )
@@ -60,10 +60,13 @@ func InitApp(ctx context.Context) (*app.App, error) {
 	db.SetMaxOpenConns(10)
 	db.SetMaxIdleConns(10)
 
+	session, err := initSession(db)
+	if err != nil {
+		return nil, err
+	}
+
 	hasher := hashing.NewHasherManager()
 	cookie := cookie.NewEncryptableCookieManager(initCookie(), encrypter)
-	session := initSession(db)
-	// session := initSession(&session.CookieSessionHandler{Cookie: cookie, Expiration: getSessionLifetime()})
 
 	return &app.App{
 		DB: db,
@@ -134,7 +137,7 @@ func appKey() ([]byte, error) {
 	return []byte(appKey), nil
 }
 
-func initSession(db *sqlx.DB) *session.SessionFactory {
+func initSession(db *sqlx.DB) (*session.SessionFactory, error) {
 	sessionName := os.Getenv("SESSION_NAME")
 	if sessionName == "" {
 		sessionName = "app_session"
@@ -146,14 +149,14 @@ func initSession(db *sqlx.DB) *session.SessionFactory {
 		httpOnly = false
 	}
 
+	handler := &sess.SqliteSessionHandler{DB: db.DB}
+
 	return &session.SessionFactory{
 		Name:     sessionName,
 		Lifetime: getSessionLifetime(),
 		HttpOnly: httpOnly,
-		Handler: &sqlite.SqliteSessionHandler{
-			DB: db.DB,
-		},
-	}
+		Handler:  handler,
+	}, nil
 }
 
 func getSessionLifetime() time.Duration {

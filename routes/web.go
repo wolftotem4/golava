@@ -8,7 +8,6 @@ import (
 	"github.com/wolftotem4/golava/internal/app"
 	"github.com/wolftotem4/golava/middlewares"
 	"github.com/wolftotem4/golava/routes/home"
-	"github.com/wolftotem4/golava/routes/user"
 )
 
 func LoadWebRoutes(r gin.IRouter, app *app.App) {
@@ -19,6 +18,7 @@ func LoadWebRoutes(r gin.IRouter, app *app.App) {
 
 	r.GET("/", home.Homepage)
 
+	// guest routes
 	{
 		r := r.Group("/")
 		r.Use(foundation.RedirectIfAuthenticated("/"))
@@ -26,10 +26,11 @@ func LoadWebRoutes(r gin.IRouter, app *app.App) {
 		r.GET("/login", home.Login)
 		r.POST("/login", home.SubmitLogin)
 
-		r.GET("/register", user.RegisterView)
-		r.POST("/register", user.Register)
+		r.GET("/register", home.RegisterView)
+		r.POST("/register", home.Register)
 	}
 
+	// protected routes
 	{
 		r := r.Group("/")
 		r.Use(foundation.Authenticate)
