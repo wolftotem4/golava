@@ -11,7 +11,7 @@ require (
 	github.com/jmoiron/sqlx v1.4.0
 	github.com/joho/godotenv v1.5.1
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c
-	github.com/wolftotem4/golava-core v0.1.1
+	github.com/wolftotem4/golava-core v0.1.2
 	github.com/wolftotem4/golava-db-sqlx v0.1.1
 	modernc.org/sqlite v1.34.1
 )
