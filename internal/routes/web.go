@@ -6,12 +6,12 @@ import (
 	"github.com/wolftotem4/golava-core/foundation"
 	"github.com/wolftotem4/golava-core/httputils/csrf"
 	"github.com/wolftotem4/golava/internal/app"
-	"github.com/wolftotem4/golava/middlewares"
-	"github.com/wolftotem4/golava/routes/home"
+	"github.com/wolftotem4/golava/internal/middlewares"
+	"github.com/wolftotem4/golava/internal/routes/home"
 )
 
-func LoadWebRoutes(r gin.IRouter, app *app.App) {
-	r.Use(cookie.CookieMiddleware(app.Cookie))
+func LoadWebRoutes(r gin.IRouter, a *app.App) {
+	r.Use(cookie.CookieMiddleware(a.Cookie))
 	r.Use(foundation.StartSession)
 	r.Use(csrf.VerifyCsrfToken)
 	r.Use(middlewares.WebAuth)

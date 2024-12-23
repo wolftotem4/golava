@@ -17,8 +17,8 @@ import (
 	t "github.com/wolftotem4/golava-core/template"
 	"github.com/wolftotem4/golava-core/validation"
 	"github.com/wolftotem4/golava/internal/bootstrap"
-	"github.com/wolftotem4/golava/middlewares"
-	"github.com/wolftotem4/golava/routes"
+	"github.com/wolftotem4/golava/internal/middlewares"
+	"github.com/wolftotem4/golava/internal/routes"
 )
 
 func main() {
