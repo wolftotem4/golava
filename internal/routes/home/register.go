@@ -13,12 +13,7 @@ import (
 )
 
 func RegisterView(c *gin.Context) {
-	i := instance.MustGetInstance(c)
-
-	c.HTML(http.StatusOK, "home/register.tmpl", t.Default(c).Wrap(t.H{
-		"alert-success": i.Session.Store.Attributes["alert-success"],
-		"alert-error":   i.Session.Store.Attributes["alert-error"],
-	}))
+	c.HTML(http.StatusOK, "home/register.tmpl", t.Default(c, t.PassFlash("alert-success", "alert-error")))
 }
 
 func Register(c *gin.Context) {

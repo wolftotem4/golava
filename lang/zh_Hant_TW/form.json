@@ -1,0 +1,14 @@
+{
+    "login": {
+        "username": "會員名稱",
+        "password": "密碼",
+        "remember": "記住我",
+        "submit": "登入",
+        "register": "註冊"
+    },
+    "register": {
+        "username": "會員名稱",
+        "password": "密碼",
+        "submit": "註冊"
+    }
+}

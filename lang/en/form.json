@@ -1,0 +1,14 @@
+{
+    "login": {
+        "username": "Username",
+        "password": "Password",
+        "remember": "Remember me",
+        "submit": "Login",
+        "register": "Register"
+    },
+    "register": {
+        "username": "Username",
+        "password": "Password",
+        "submit": "Register"
+    }
+}

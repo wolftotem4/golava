@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/wolftotem4/golava-core/cookie"
 	"github.com/wolftotem4/golava-core/foundation"
-	"github.com/wolftotem4/golava-core/httputils/csrf"
+	"github.com/wolftotem4/golava-core/http/csrf"
 	"github.com/wolftotem4/golava/internal/app"
 	"github.com/wolftotem4/golava/internal/middlewares"
 	"github.com/wolftotem4/golava/internal/routes/home"

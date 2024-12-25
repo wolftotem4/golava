@@ -30,17 +30,17 @@
   <form action="{{url "register"}}" method="post">
    {{ .csrf }}
    <div>
-    <label for="input_username">Username</label>
+    <label for="input_username">{{.T.T "form.register.username"}}</label>
     <input class="block w-full p-2.5 border outline-none border-gray-300 text-gray-900 rounded-lg text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500" name="username" type="text" id="input_username">
     {{with .errors.username}}<p class="text-red-700">{{.}}</p>{{end}}
    </div>
    <div>
-    <label for="input_password">Password</label>
+    <label for="input_password">{{.T.T "form.register.password"}}</label>
     <input class="block w-full p-2.5 border outline-none border-gray-300 text-gray-900 rounded-lg text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500" name="password" type="password" id="input_password">
     {{with .errors.password}}<p class="text-red-700">{{.}}</p>{{end}}
    </div>
    <div>
-    <button class="inline-block m-4 rounded-full p-3 bg-orange-700 text-white font-bold" type="submit">Submit</button>
+    <button class="inline-block m-4 rounded-full p-3 bg-orange-700 text-white font-bold" type="submit">{{.T.T "form.register.submit"}}</button>
    </div>
   </form>
  </main>

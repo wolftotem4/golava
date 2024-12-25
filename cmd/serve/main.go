@@ -10,15 +10,15 @@ import (
 	brotli "github.com/anargu/gin-brotli"
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
-	"github.com/gin-gonic/gin/binding"
 	"github.com/pkg/browser"
 	"github.com/wolftotem4/golava-core/foundation"
 	"github.com/wolftotem4/golava-core/instance"
+	"github.com/wolftotem4/golava-core/lang"
 	t "github.com/wolftotem4/golava-core/template"
-	"github.com/wolftotem4/golava-core/validation"
 	"github.com/wolftotem4/golava/internal/bootstrap"
 	"github.com/wolftotem4/golava/internal/middlewares"
 	"github.com/wolftotem4/golava/internal/routes"
+	"golang.org/x/text/language"
 )
 
 func main() {
@@ -29,8 +29,6 @@ func main() {
 		slog.Error(err.Error())
 		return
 	}
-
-	binding.Validator = validation.NewMoldModValidator()
 
 	gin.SetMode(os.Getenv(gin.EnvGinMode))
 	r := gin.New()
@@ -44,6 +42,11 @@ func main() {
 	r.Use(instance.NewInstance(app))
 	r.Use(foundation.SaveSession)
 	r.Use(middlewares.ErrorHandle)
+	r.Use(lang.SetLocale("hl", map[language.Tag]string{
+		language.English:            "en",
+		language.SimplifiedChinese:  "zh",
+		language.TraditionalChinese: "zh_Hant_TW",
+	}))
 
 	routes.LoadWebRoutes(r, app)
 	routes.LoadApiRoutes(r.Group("/api"), app)

@@ -30,19 +30,21 @@
   <form action="{{url "login"}}" method="post">
    {{ .csrf }}
    <div>
-    <label for="input_username">Username</label>
+    <label for="input_username">{{.T.T "form.login.username"}}</label>
     <input class="block w-full p-2.5 border outline-none border-gray-300 text-gray-900 rounded-lg text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500" name="username" type="text" id="input_username">
+    {{with .errors.username}}<p class="text-red-700">{{.}}</p>{{end}}
    </div>
    <div>
-    <label for="input_password">Password</label>
+    <label for="input_password">{{.T.T "form.login.password"}}</label>
     <input class="block w-full p-2.5 border outline-none border-gray-300 text-gray-900 rounded-lg text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500" name="password" type="password" id="input_password">
+    {{with .errors.password}}<p class="text-red-700">{{.}}</p>{{end}}
    </div>
    <div>
-    <label><input type="checkbox" name="remember" value="1"> Remember me</label>
+    <label><input type="checkbox" name="remember" value="1"> {{.T.T "form.login.remember"}}</label>
    </div>
    <div>
-    <button class="inline-block m-4 rounded-full p-3 bg-orange-700 text-white font-bold" type="submit">Login</button>
-    <a href="{{url "register"}}">Register</a>
+    <button class="inline-block m-4 rounded-full p-3 bg-orange-700 text-white font-bold" type="submit">{{.T.T "form.login.submit"}}</button>
+    <a href="{{url "register"}}">{{.T.T "form.login.register"}}</a>
    </div>
   </form>
  </main>
