@@ -25,6 +25,7 @@ func WebAuth(c *gin.Context) {
 		Name:             "app",
 		Session:          instance.Session,
 		Cookie:           app.Cookie,
+		Hasher:           app.Hashing,
 		RememberDuration: 400 * DAY,
 		Provider: &db.SqlxUserProvider{
 			Hasher:        app.Hashing,

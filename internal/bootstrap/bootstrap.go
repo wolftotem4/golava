@@ -11,7 +11,7 @@ import (
 	"github.com/wolftotem4/golava-core/cookie"
 	"github.com/wolftotem4/golava-core/golava"
 	"github.com/wolftotem4/golava-core/hashing"
-	"github.com/wolftotem4/golava-core/router"
+	"github.com/wolftotem4/golava-core/routing"
 	"github.com/wolftotem4/golava/internal/app"
 	_ "modernc.org/sqlite"
 )
@@ -36,7 +36,7 @@ func InitApp(ctx context.Context) (*app.App, error) {
 		return nil, err
 	}
 
-	router, err := router.NewRouter("/")
+	router, err := routing.NewRouter("/")
 	if err != nil {
 		return nil, err
 	}

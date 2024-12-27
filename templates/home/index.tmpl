@@ -18,11 +18,11 @@
   <p class="text-center">An enhanced framework which is based on Gin.</p>
  </main>
  <nav class="flex item-center justify-center flex-row">
-  <a class="inline-block m-4 rounded-full p-3 bg-orange-700 text-white font-bold" href="https://github.com/wolftotem4/golava">GITHUB</a>
+  <a class="inline-block m-4 rounded-full px-5 py-3 bg-orange-700 text-white font-bold" href="https://github.com/wolftotem4/golava">GITHUB</a>
   {{if .auth.Check}}
-   <a class="inline-block m-4 rounded-full p-3 bg-orange-700 text-white font-bold" href="{{url "logout"}}">LOGOUT</a>
+   <a class="inline-block m-4 rounded-full px-5 py-3 bg-orange-700 text-white font-bold" href="{{url "logout"}}">LOGOUT</a>
   {{else}}
-   <a class="inline-block m-4 rounded-full p-3 bg-orange-700 text-white font-bold" href="{{url "login"}}">LOGIN</a>
+   <a class="inline-block m-4 rounded-full px-5 py-3 bg-orange-700 text-white font-bold" href="{{url "login"}}">LOGIN</a>
   {{end}}
  </nav>
 </div>
