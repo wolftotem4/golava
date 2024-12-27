@@ -2,7 +2,6 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/wolftotem4/golava-core/auth/generic"
 	authmid "github.com/wolftotem4/golava-core/auth/middleware"
 	"github.com/wolftotem4/golava-core/cookie"
 	"github.com/wolftotem4/golava-core/http/csrf"
@@ -46,18 +45,5 @@ func LoadWebRoutes(r gin.IRouter, a *app.App) {
 		r.Use(authmid.Authenticate)
 
 		r.GET("/logout", home.SubmitLogout)
-
-		r.GET("foo", func(c *gin.Context) {
-			i := instance.MustGetInstance(c)
-			err := i.Auth.(*generic.SessionGuard).LogoutOtherDevices(c, "test")
-			if err != nil {
-				c.Error(err)
-				return
-			}
-
-			c.JSON(200, gin.H{
-				"message": "foo",
-			})
-		})
 	}
 }
