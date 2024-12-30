@@ -7,11 +7,11 @@ import (
 
 	"github.com/joho/godotenv"
 	"github.com/wolftotem4/golava-core/encryption"
-	"github.com/wolftotem4/golava/internal/cli"
+	"github.com/wolftotem4/golava/internal/env"
 )
 
 func main() {
-	err := godotenv.Load(cli.DotEnvFile)
+	err := godotenv.Load(env.DotEnvFile)
 	if err != nil {
 		slog.Error(err.Error())
 		return
@@ -24,7 +24,7 @@ func main() {
 		return
 	}
 
-	err = cli.SetKeyInEnvironmentFile("APP_KEY", fmt.Sprintf("base64:%s", base64.StdEncoding.EncodeToString(key)))
+	err = env.SetKeyInEnvironmentFile("APP_KEY", fmt.Sprintf("base64:%s", base64.StdEncoding.EncodeToString(key)))
 	if err != nil {
 		slog.Error(err.Error())
 		return

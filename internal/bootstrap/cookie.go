@@ -5,18 +5,13 @@ import (
 	"os"
 
 	"github.com/wolftotem4/golava-core/cookie"
+	"github.com/wolftotem4/golava/internal/env"
 )
 
 func initCookie() *cookie.CookieManager {
 	path := os.Getenv("SESSION_PATH")
 	if path == "" {
 		path = "/"
-	}
-
-	var secure bool
-	secureStr := os.Getenv("SESSION_SECURE_COOKIE")
-	if secureStr == "true" || secureStr == "1" {
-		secure = true
 	}
 
 	var sameSite http.SameSite
@@ -34,7 +29,7 @@ func initCookie() *cookie.CookieManager {
 	return &cookie.CookieManager{
 		Path:     path,
 		Domain:   os.Getenv("SESSION_DOMAIN"),
-		Secure:   secure,
+		Secure:   env.Bool(os.Getenv("SESSION_SECURE_COOKIE")),
 		SameSite: sameSite,
 	}
 }

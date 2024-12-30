@@ -4,11 +4,13 @@ import (
 	"context"
 	"log/slog"
 	"net/http"
+	"net/url"
 	"os"
 
 	brotli "github.com/anargu/gin-brotli"
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 	"github.com/wolftotem4/golava-core/instance"
 	"github.com/wolftotem4/golava-core/lang"
 	sessmid "github.com/wolftotem4/golava-core/session/middleware"
@@ -23,20 +25,40 @@ import (
 func main() {
 	ctx := context.Background()
 
+	// Load environment variables
+	err := godotenv.Load()
+	if err != nil {
+		slog.Error(err.Error())
+		return
+	}
+
+	// Initialize logger
+	err = bootstrap.InitLogger()
+	if err != nil {
+		slog.Error(err.Error())
+		return
+	}
+
+	// Initialize app
 	app, err := bootstrap.InitApp(ctx)
 	if err != nil {
 		slog.Error(err.Error())
 		return
 	}
 
+	// Initialize gin
 	gin.SetMode(os.Getenv(gin.EnvGinMode))
 	r := gin.New()
 	r.Use(gin.Recovery())
 
+	// setup templates & functions
 	tplmid.LoadFuncMap(r, app)
 	r.LoadHTMLGlob("templates/**/*")
+
+	// setup static files
 	r.Use(static.Serve("/assets", static.LocalFile("./public/assets", true)))
 
+	// setup global middlewares
 	r.Use(
 		instance.NewInstance(app),
 		brotli.Brotli(brotli.DefaultCompression),
@@ -44,10 +66,11 @@ func main() {
 		middlewares.ErrorHandle,
 	)
 
+	// setup host language support
 	r.Use(lang.SetLocale("hl", map[language.Tag]string{
-		language.English:            "en",
-		language.SimplifiedChinese:  "zh",
-		language.TraditionalChinese: "zh_Hant_TW",
+		language.English: "en",
+		// language.SimplifiedChinese:  "zh",
+		// language.TraditionalChinese: "zh_Hant_TW",
 	}))
 
 	routes.LoadWebRoutes(r.Group("/"), app)
@@ -58,7 +81,7 @@ func main() {
 	})
 
 	appURL := os.Getenv("BASE_URL")
-	app.Router.BaseURL, _ = app.Router.BaseURL.Parse(appURL)
+	app.Router.BaseURL, _ = url.Parse(appURL)
 
 	r.Run(os.Getenv("LISTEN_ADDR"))
 }

@@ -1,12 +1,11 @@
 package bootstrap
 
 import (
-	"encoding/base64"
 	"errors"
 	"os"
-	"strings"
 
 	"github.com/wolftotem4/golava-core/encryption"
+	"github.com/wolftotem4/golava/internal/env"
 )
 
 func initEncryption() (encryption.IEncrypter, error) {
@@ -19,14 +18,14 @@ func initEncryption() (encryption.IEncrypter, error) {
 }
 
 func appKey() ([]byte, error) {
-	appKey := os.Getenv("APP_KEY")
-	if appKey == "" {
+	appKey, err := env.Bytes(os.Getenv("APP_KEY"))
+	if err != nil {
+		return nil, err
+	}
+
+	if len(appKey) == 0 {
 		return nil, errors.New("APP_KEY is required")
 	}
 
-	if strings.HasPrefix(appKey, "base64:") {
-		return base64.StdEncoding.DecodeString(appKey[7:])
-	}
-
-	return []byte(appKey), nil
+	return appKey, nil
 }

@@ -2,34 +2,23 @@ package bootstrap
 
 import (
 	"context"
-	"log/slog"
 	"os"
 	"time"
 
 	"github.com/jmoiron/sqlx"
-	"github.com/joho/godotenv"
 	"github.com/wolftotem4/golava-core/cookie"
 	"github.com/wolftotem4/golava-core/golava"
 	"github.com/wolftotem4/golava-core/hashing"
 	"github.com/wolftotem4/golava-core/routing"
 	"github.com/wolftotem4/golava/internal/app"
+	"github.com/wolftotem4/golava/internal/env"
 	_ "modernc.org/sqlite"
 )
 
 func InitApp(ctx context.Context) (*app.App, error) {
-	slog.SetLogLoggerLevel(slog.LevelDebug)
-
 	locale := "en"
 
-	err := godotenv.Load()
-	if err != nil {
-		return nil, err
-	}
-
-	var debug bool
-	if debugVal := os.Getenv("APP_DEBUG"); debugVal == "true" || debugVal == "1" {
-		debug = true
-	}
+	debug := env.Bool(os.Getenv("APP_DEBUG"))
 
 	appKey, err := appKey()
 	if err != nil {
