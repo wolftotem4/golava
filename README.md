@@ -22,8 +22,8 @@ import (
 type App struct {
 	golava.App
 	DB    *sqlx.DB
-    
-    // add this line
+	
+	// add this line
 	Redis *redis.Client
 }
 ```
@@ -50,7 +50,7 @@ func initRedis() *redis.Client {
 return &app.App{
 		DB:    db,
 
-    	// add this line
+		// add this line
 		Redis: initRedis(),
 
 		App: golava.App{
@@ -61,9 +61,9 @@ return &app.App{
 
 ```go
 import (
-    // ...
-    ratemid "github.com/wolftotem4/golava/internal/ratelimit/middleware"
-    // ...
+	// ...
+	ratemid "github.com/wolftotem4/golava/internal/ratelimit/middleware"
+	// ...
 )
 
 // ...
