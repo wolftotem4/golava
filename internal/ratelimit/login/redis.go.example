@@ -1,0 +1,45 @@
+package login
+
+import (
+	"context"
+	"fmt"
+	"time"
+
+	"github.com/redis/go-redis/v9"
+)
+
+type RedisLoginRateLimiter struct {
+	store *redis.Client
+	key   string
+	limit int
+	decay time.Duration
+}
+
+func NewRedisLoginRateLimiter(redis *redis.Client, key string, limit int, decay time.Duration) *RedisLoginRateLimiter {
+	return &RedisLoginRateLimiter{store: redis, key: key, limit: limit, decay: decay}
+}
+
+func (r *RedisLoginRateLimiter) Hit(ctx context.Context, username string) (bool, error) {
+	result, err := r.store.Eval(ctx, luaScript(), []string{r.redisKey(username)}, r.limit, int(r.decay.Seconds())).Result()
+	if err != nil {
+		return false, err
+	}
+	return result.(int64) == 1, nil
+}
+
+func (r *RedisLoginRateLimiter) redisKey(username string) string {
+	return fmt.Sprintf("%s:%s", r.key, username)
+}
+
+func luaScript() string {
+	return `
+local Counter = redis.call('incr', KEYS[1])
+if (redis.call('ttl', KEYS[1]) == -1) then
+	redis.call('expire', KEYS[1], tonumber(ARGV[2]))
+	Counter = 1
+end
+if (Counter > tonumber(ARGV[1])) then
+	return 1
+end
+return 0`
+}

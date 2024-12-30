@@ -1,0 +1,38 @@
+package middleware
+
+import (
+	"strings"
+	"time"
+
+	"github.com/gin-gonic/gin"
+	"github.com/wolftotem4/golava-core/instance"
+	"github.com/wolftotem4/golava/internal/app"
+	"github.com/wolftotem4/golava/internal/ratelimit"
+	"github.com/wolftotem4/golava/internal/ratelimit/login"
+)
+
+func LoginRateLimit(queryKey string, limit int, decay time.Duration) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var (
+			i        = instance.MustGetInstance(c)
+			a        = i.App.(*app.App)
+			username = strings.TrimSpace(c.Query(queryKey))
+		)
+
+		limiter := login.NewRedisLoginRateLimiter(a.Redis, "login_rate_limit", limit, decay)
+		burst, err := limiter.Hit(c, username)
+		if err != nil {
+			c.Error(err)
+			c.Abort()
+			return
+		}
+
+		if burst {
+			c.Error(ratelimit.ErrTooManyAttempts)
+			c.Abort()
+			return
+		}
+
+		c.Next()
+	}
+}

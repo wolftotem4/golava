@@ -13,6 +13,7 @@ import (
 	"github.com/wolftotem4/golava-core/http/utils"
 	"github.com/wolftotem4/golava-core/instance"
 	t "github.com/wolftotem4/golava-core/template"
+	"github.com/wolftotem4/golava/internal/ratelimit"
 )
 
 func ErrorHandle(c *gin.Context) {
@@ -34,6 +35,11 @@ func ErrorHandle(c *gin.Context) {
 
 	if errors.Is(err, csrf.ErrTokenMismatch) {
 		handleTokenMismatch(c, err)
+		return
+	}
+
+	if errors.Is(err, ratelimit.ErrTooManyAttempts) {
+		displayErrorMessage(c, http.StatusTooManyRequests, err.Error())
 		return
 	}
 
