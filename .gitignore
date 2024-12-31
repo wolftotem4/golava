@@ -1,2 +1,4 @@
 /.env
 /db.sqlite
+/.idea
+/.vscode
