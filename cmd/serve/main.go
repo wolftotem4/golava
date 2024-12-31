@@ -12,7 +12,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"github.com/wolftotem4/golava-core/instance"
-	"github.com/wolftotem4/golava-core/lang"
+	langmid "github.com/wolftotem4/golava-core/lang/middleware"
 	sessmid "github.com/wolftotem4/golava-core/session/middleware"
 	t "github.com/wolftotem4/golava-core/template"
 	tplmid "github.com/wolftotem4/golava-core/template/middleware"
@@ -67,7 +67,7 @@ func main() {
 	)
 
 	// setup host language support
-	r.Use(lang.SetLocale("hl", map[language.Tag]string{
+	r.Use(langmid.SetLocale("hl", map[language.Tag]string{
 		language.English: "en",
 		// language.SimplifiedChinese:  "zh",
 		// language.TraditionalChinese: "zh_Hant_TW",
