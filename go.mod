@@ -12,7 +12,7 @@ require (
 	github.com/jmoiron/sqlx v1.4.0
 	github.com/joho/godotenv v1.5.1
 	github.com/wolftotem4/golangloader v0.9.1
-	github.com/wolftotem4/golava-core v0.1.4
+	github.com/wolftotem4/golava-core v0.1.5
 	github.com/wolftotem4/golava-db-sqlx v0.1.2
 	golang.org/x/text v0.21.0
 	modernc.org/sqlite v1.34.1
