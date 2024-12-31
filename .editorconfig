@@ -11,5 +11,10 @@ charset = utf-8
 trim_trailing_whitespace = false
 insert_final_newline = false
 
+[{go.mod,go.sum,*.go}]
+indent_style = tab
+indent_size = 4
+
 [*.tmpl]
+indent_style = space
 indent_size = 1
