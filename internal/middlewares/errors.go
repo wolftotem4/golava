@@ -12,6 +12,7 @@ import (
 	"github.com/wolftotem4/golava-core/http/csrf"
 	"github.com/wolftotem4/golava-core/http/utils"
 	"github.com/wolftotem4/golava-core/instance"
+	"github.com/wolftotem4/golava-core/lang"
 	t "github.com/wolftotem4/golava-core/template"
 	"github.com/wolftotem4/golava/internal/ratelimit"
 )
@@ -59,9 +60,13 @@ func ErrorHandle(c *gin.Context) {
 }
 
 func handleValidationError(c *gin.Context, err validator.ValidationErrors, instance *instance.Instance) {
+	trans := instance.GetUserPreferredTranslator(
+		lang.Fallback(instance.App.Base().Translation.GetFallback()),
+	)
+
 	var errors = make(map[string]string)
 	for _, e := range err {
-		errors[e.Field()] = e.Translate(instance.GetUserPreferredTranslator())
+		errors[e.Field()] = e.Translate(trans)
 	}
 
 	if utils.ExpectJson(c.Accepted) {
