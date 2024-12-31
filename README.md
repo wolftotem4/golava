@@ -2,6 +2,13 @@
 
 this document is still work in progress
 
+## Contents
+
+- [Getting started](https://github.com/wolftotem4/golava#getting-started)
+- [Login Attempt Protection (Redis)](https://github.com/wolftotem4/golava#login-attempt-protection-redis)
+- [WIP] Example: E-mail authentification (sqlx/gorm)
+- [WIP] Example: E-mail authentification (ent)
+
 ## Getting started
 
 ### Install `golava-new` command
@@ -10,7 +17,7 @@ this document is still work in progress
 $ go install github.com/wolftotem4/golava-new
 ```
 
-### Generate&edit `setup.yaml` file
+### Generate & edit `setup.yaml` file
 
 For avoiding unnecessary package dependencies, some config needs to be setup before generating the actual project.
 
@@ -154,3 +161,10 @@ import (
 r.POST("/login", ratemid.LoginRateLimit("username", 3, 1*time.Minute), home.SubmitLogin)
 ```
 
+## Example: E-mail authentification (sqlx/gorm)
+
+this section is WIP
+
+## Example: E-mail authentification (ent)
+
+this section is WIP
