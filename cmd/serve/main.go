@@ -60,8 +60,9 @@ func main() {
 
 	// setup global middlewares
 	r.Use(
-		instance.NewInstance(app),
 		brotli.Brotli(brotli.DefaultCompression),
+		middlewares.Recovery(app.Debug),
+		instance.NewInstance(app),
 		sessmid.SaveSession,
 		middlewares.ErrorHandle,
 	)
