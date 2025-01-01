@@ -2,6 +2,7 @@ package bootstrap
 
 import (
 	"context"
+	"net/url"
 	"os"
 	"time"
 
@@ -29,6 +30,7 @@ func InitApp(ctx context.Context) (*app.App, error) {
 	if err != nil {
 		return nil, err
 	}
+	router.BaseURL, _ = url.Parse(os.Getenv("BASE_URL"))
 
 	encrypter, err := initEncryption()
 	if err != nil {

@@ -12,7 +12,7 @@ import (
 	"github.com/wolftotem4/golava/internal/routes/home"
 )
 
-func LoadWebRoutes(r gin.IRouter, a *app.App) {
+func RegisterWebRoutes(r gin.IRouter, a *app.App) {
 	r.Use(cookie.CookieMiddleware(a.Cookie))
 	r.Use(sessmid.StartSession)
 	r.Use(csrf.VerifyCsrfToken)
