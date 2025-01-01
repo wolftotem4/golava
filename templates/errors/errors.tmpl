@@ -15,8 +15,22 @@
   <span class="block p-4"><a href="{{url "/"}}">Golava</a></span>
  </h1>
  <div class="flex items-center justify-center flex-row text-4xl font-bold text-red-500">
-  <span class="block p-4">{{.message}}</span>
+  <span class="block py-4">{{.message}}</span>
  </div>
+ {{with .trace}}
+ <div class="my-4 overflow-auto">
+  <div class="md:table w-full">
+   <div class="md:table-header-group">
+    <div class="md:table-row"><div class="md:table-cell text-left font-bold">Function</div><div class="md:table-cell text-left font-bold">File</div></div>
+   </div class="md:table-header-group">
+   <div class="md:table-row-group">
+    {{range $stack := .}}
+    <div class="md:table-row"><div class="md:table-cell">{{$stack.function}}</div><div class="md:table-cell">{{$stack.file}}:{{$stack.line}}</div></div>
+    {{end}}
+   </div>
+  </div>
+ </div>
+ {{end}}
 </div>
 </body>
 </html>
