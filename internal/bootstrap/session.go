@@ -11,7 +11,7 @@ import (
 )
 
 func initSession(db *sqlx.DB) (*session.SessionFactory, error) {
-	sessionName := os.Getenv("SESSION_NAME")
+	sessionName := os.Getenv("SESSION_COOKIE")
 	if sessionName == "" {
 		sessionName = "app_session"
 	}
