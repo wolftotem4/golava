@@ -84,5 +84,7 @@ func main() {
 	appURL := os.Getenv("BASE_URL")
 	app.Router.BaseURL, _ = url.Parse(appURL)
 
-	r.Run(os.Getenv("LISTEN_ADDR"))
+	if err := r.Run(os.Getenv("LISTEN_ADDR")); err != nil {
+		slog.ErrorContext(ctx, err.Error())
+	}
 }
