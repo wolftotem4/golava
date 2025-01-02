@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log/slog"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -124,11 +125,13 @@ func displayErrorWithStackTrace(c *gin.Context, code int, err stackTraceableErro
 func convertStackTraceableError(err stackTraceableError) map[string]any {
 	trace := err.StackTrace()
 
+	line, _ := strconv.Atoi(fmt.Sprintf("%d", trace[0]))
+
 	return map[string]any{
 		"message":  err.Error(),
 		"function": fmt.Sprintf("%n", trace[0]),
 		"file":     getFileFromStack(trace[0]),
-		"line":     fmt.Sprintf("%d", trace[0]),
+		"line":     line,
 		"trace":    formatStackTrace(trace),
 	}
 }
@@ -136,10 +139,12 @@ func convertStackTraceableError(err stackTraceableError) map[string]any {
 func formatStackTrace(traces []errors.Frame) []map[string]any {
 	var lines = make([]map[string]any, 0, len(traces))
 	for _, f := range traces {
+		line, _ := strconv.Atoi(fmt.Sprintf("%d", f))
+
 		lines = append(lines, map[string]any{
 			"function": fmt.Sprintf("%n", f),
 			"file":     getFileFromStack(f),
-			"line":     fmt.Sprintf("%d", f),
+			"line":     line,
 		})
 	}
 	return lines
