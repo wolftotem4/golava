@@ -6,12 +6,14 @@ import (
 	brotli "github.com/anargu/gin-brotli"
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
+	"github.com/wolftotem4/golava-core/http/utils"
 	"github.com/wolftotem4/golava-core/instance"
 	langmid "github.com/wolftotem4/golava-core/lang/middleware"
 	sessmid "github.com/wolftotem4/golava-core/session/middleware"
 	t "github.com/wolftotem4/golava-core/template"
 	tplmid "github.com/wolftotem4/golava-core/template/middleware"
 	"github.com/wolftotem4/golava/internal/app"
+	"github.com/wolftotem4/golava/internal/helper"
 	"github.com/wolftotem4/golava/internal/middlewares"
 	"golang.org/x/text/language"
 )
@@ -44,6 +46,13 @@ func Register(r *gin.Engine, a *app.App) {
 	// RegisterApiRoutes(r.Group("/api"), a)
 
 	r.NoRoute(func(c *gin.Context) {
-		c.HTML(http.StatusNotFound, "errors/404.tmpl", t.Default(c))
+		if utils.ExpectJson(c.GetHeader("Accept")) {
+			var i = instance.MustGetInstance(c)
+
+			msg, _ := helper.GetTranslator(i, true).T("error.page_not_found")
+			c.JSON(http.StatusNotFound, gin.H{"message": msg})
+		} else {
+			c.HTML(http.StatusNotFound, "errors/404.tmpl", t.Default(c))
+		}
 	})
 }
