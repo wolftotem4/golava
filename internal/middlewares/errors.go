@@ -42,7 +42,7 @@ func ErrorHandle(c *gin.Context) {
 	}
 
 	if errors.Is(err, csrf.ErrTokenMismatch) {
-		handleTokenMismatch(c, err)
+		handleTokenMismatch(c, err, i)
 		return
 	}
 
@@ -96,17 +96,19 @@ func handleValidationError(c *gin.Context, err validator.ValidationErrors, i *in
 	}
 }
 
-func unauthenticated(c *gin.Context, err error, instance *instance.Instance) {
+func unauthenticated(c *gin.Context, _ error, i *instance.Instance) {
 	if utils.ExpectJson(c.GetHeader("Accept")) {
-		c.JSON(http.StatusUnauthorized, gin.H{"message": err.Error()})
+		msg, _ := helper.GetTranslator(i, true).T("error.unauthenticated")
+		c.JSON(http.StatusUnauthorized, gin.H{"message": msg})
 	} else {
-		instance.Redirector.Guest(http.StatusSeeOther, "login")
+		i.Redirector.Guest(http.StatusSeeOther, "login")
 	}
 }
 
-func handleTokenMismatch(c *gin.Context, err error) {
+func handleTokenMismatch(c *gin.Context, err error, i *instance.Instance) {
 	if utils.ExpectJson(c.GetHeader("Accept")) {
-		c.JSON(419, t.H{"message": err.Error()})
+		msg, _ := helper.GetTranslator(i, true).T("error.csrf_token_mismatch")
+		c.JSON(419, t.H{"message": msg})
 	} else {
 		c.HTML(419, "errors/419.tmpl", t.Default(c).Wrap(t.H{"message": err.Error()}))
 	}

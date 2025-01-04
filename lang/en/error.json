@@ -1,5 +1,8 @@
 {
+    "page_not_found": "Page Not Found",
     "page_expired": "Page Expired",
     "server_error": "Server Error",
-    "validation_error": "The given data was invalid."
+    "validation_error": "The given data was invalid.",
+    "csrf_token_mismatch": "CSRF token mismatch",
+    "unauthenticated": "Unauthenticated"
 }

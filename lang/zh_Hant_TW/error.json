@@ -1,5 +1,8 @@
 {
+    "page_not_found": "找不到頁面",
     "page_expired": "頁面已過期",
     "server_error": "伺服器錯誤",
-    "validation_error": "給定的數據無效。"
+    "validation_error": "給定的數據無效。",
+    "csrf_token_mismatch": "CSRF令牌不匹配",
+    "unauthenticated": "未經驗證"
 }

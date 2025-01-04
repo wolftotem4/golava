@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Page Expired :: {{.app.name}}</title>
+<title>{{.T.T "error.page_expired"}} :: {{.app.name}}</title>
 <link rel="icon" href="{{url "assets/images/logo.svg"}}" type="image/svg+xml">
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -16,7 +16,7 @@
  </h1>
  <div class="flex items-center justify-center flex-row text-4xl font-bold text-red-500">
   <span class="block p-4">419</span>
-  <span class="block p-4">Page Expired</span>
+  <span class="block p-4">{{.T.T "error.page_expired"}}</span>
  </div>
 </div>
 </body>
