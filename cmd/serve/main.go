@@ -22,7 +22,7 @@ func main() {
 	}
 
 	// Initialize logger
-	err = bootstrap.InitLogger()
+	err = bootstrap.InitDefaultLogger()
 	if err != nil {
 		slog.Error(err.Error())
 		return

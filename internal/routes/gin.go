@@ -29,9 +29,10 @@ func Register(r *gin.Engine, a *app.App) {
 	// setup global middlewares
 	r.Use(
 		brotli.Brotli(brotli.DefaultCompression),
-		middlewares.Recovery(a.Debug),
 		instance.NewInstance(a),
+		middlewares.Recovery(a.Debug),
 		sessmid.SaveSession,
+		middlewares.LogRequests(a.Loggers.Request),
 		middlewares.ErrorHandle,
 	)
 

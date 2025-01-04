@@ -7,7 +7,9 @@ import (
 
 type App struct {
 	golava.App
-	DB *sqlx.DB
+
+	Loggers *Loggers
+	DB      *sqlx.DB
 }
 
 func (a *App) Base() *golava.App {

@@ -55,11 +55,17 @@ func InitApp(ctx context.Context) (*app.App, error) {
 		return nil, err
 	}
 
+	loggers, err := initLoggers()
+	if err != nil {
+		return nil, err
+	}
+
 	hasher := hashing.NewHasherManager()
 	cookie := cookie.NewEncryptableCookieManager(initCookie(), encrypter)
 
 	return &app.App{
-		DB: db,
+		Loggers: loggers,
+		DB:      db,
 		App: golava.App{
 			Name:           os.Getenv("APP_NAME"),
 			Debug:          debug,

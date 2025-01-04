@@ -2,6 +2,8 @@ package env
 
 import (
 	"encoding/base64"
+	"os"
+	"strconv"
 	"strings"
 )
 
@@ -14,4 +16,17 @@ func Bytes(value string) ([]byte, error) {
 		return base64.StdEncoding.DecodeString(value[7:])
 	}
 	return []byte(value), nil
+}
+
+func Int(value string) int {
+	result, _ := strconv.Atoi(value)
+	return result
+}
+
+func Get(key, defaultValue string) string {
+	value := os.Getenv(key)
+	if value == "" {
+		return defaultValue
+	}
+	return value
 }
