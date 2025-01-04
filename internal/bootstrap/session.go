@@ -2,38 +2,27 @@ package bootstrap
 
 import (
 	"os"
-	"strconv"
 	"time"
 
 	"github.com/jmoiron/sqlx"
 	"github.com/wolftotem4/golava-core/session"
 	sess "github.com/wolftotem4/golava-core/session/sqlite"
+	"github.com/wolftotem4/golava/internal/env"
 )
 
 func initSession(db *sqlx.DB) (*session.SessionFactory, error) {
-	sessionName := os.Getenv("SESSION_COOKIE")
-	if sessionName == "" {
-		sessionName = "app_session"
-	}
-
-	httpOnly := true
-	httpOnlyStr := os.Getenv("SESSION_HTTP_ONLY")
-	if httpOnlyStr != "" && httpOnlyStr != "true" && httpOnlyStr != "1" {
-		httpOnly = false
-	}
-
 	handler := &sess.SqliteSessionHandler{DB: db.DB}
 
 	return &session.SessionFactory{
-		Name:     sessionName,
+		Name:     env.Get("SESSION_COOKIE", "app_session"),
 		Lifetime: getSessionLifetime(),
-		HttpOnly: httpOnly,
+		HttpOnly: env.Bool(os.Getenv("SESSION_HTTP_ONLY")),
 		Handler:  handler,
 	}, nil
 }
 
 func getSessionLifetime() time.Duration {
-	lifeTime, _ := strconv.ParseInt(os.Getenv("SESSION_LIFETIME"), 10, 64)
+	lifeTime := env.Int(os.Getenv("SESSION_LIFETIME"))
 	if lifeTime == 0 {
 		lifeTime = 120
 	}
