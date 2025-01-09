@@ -32,7 +32,7 @@ func Register(r *gin.Engine, a *app.App) {
 		instance.NewInstance(a),
 		middlewares.Recovery(a.Debug),
 		sessmid.SaveSession,
-		middlewares.LogRequests(a.Loggers.Request),
+		middlewares.LogRequests(a.L.MustGet("request")),
 		middlewares.ErrorHandle,
 	)
 

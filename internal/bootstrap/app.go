@@ -13,6 +13,7 @@ import (
 	"github.com/wolftotem4/golava-core/routing"
 	"github.com/wolftotem4/golava/internal/app"
 	"github.com/wolftotem4/golava/internal/env"
+	"github.com/wolftotem4/golava/internal/logging"
 	_ "modernc.org/sqlite"
 )
 
@@ -55,17 +56,12 @@ func InitApp(ctx context.Context) (*app.App, error) {
 		return nil, err
 	}
 
-	loggers, err := initLoggers()
-	if err != nil {
-		return nil, err
-	}
-
 	hasher := hashing.NewHasherManager()
 	cookie := cookie.NewEncryptableCookieManager(initCookie(), encrypter)
 
 	return &app.App{
-		Loggers: loggers,
-		DB:      db,
+		L:  logging.NewLoggerManager(),
+		DB: db,
 		App: golava.App{
 			Name:           os.Getenv("APP_NAME"),
 			Debug:          debug,

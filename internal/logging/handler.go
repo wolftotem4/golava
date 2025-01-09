@@ -9,6 +9,15 @@ import (
 	// slogsyslog "github.com/samber/slog-syslog/v2"
 )
 
+func GetLogger(sink string, options *slog.HandlerOptions) (*slog.Logger, error) {
+	handler, err := GetHandler(sink, options)
+	if err != nil {
+		return nil, err
+	}
+
+	return slog.New(handler), nil
+}
+
 func GetHandler(sink string, options *slog.HandlerOptions) (slog.Handler, error) {
 	index := strings.IndexRune(sink, ':')
 

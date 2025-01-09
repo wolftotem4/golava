@@ -24,17 +24,14 @@ func InitDefaultLogger() error {
 	return nil
 }
 
-func initLoggers() (*app.Loggers, error) {
-	opts := &slog.HandlerOptions{Level: getDefaultLogLevel()}
-
-	request, err := logging.GetHandler(env.Get("REQUEST_LOG_SINK", "console"), opts)
-	if err != nil {
-		return nil, err
+func InitLogger(a *app.App, settings ...func(a *app.App) error) error {
+	for _, setting := range settings {
+		if err := setting(a); err != nil {
+			return err
+		}
 	}
 
-	return &app.Loggers{
-		Request: slog.New(request),
-	}, nil
+	return nil
 }
 
 func getDefaultLogLevel() slog.Level {
@@ -42,5 +39,27 @@ func getDefaultLogLevel() slog.Level {
 		return slog.LevelDebug
 	} else {
 		return slog.LevelInfo
+	}
+}
+
+func Logger(name string, logger *slog.Logger) func(a *app.App) error {
+	return func(a *app.App) error {
+		a.L.Set(name, logger)
+		return nil
+	}
+}
+
+func LoggerSink(name, sink string) func(a *app.App) error {
+	return func(a *app.App) error {
+		opts := &slog.HandlerOptions{Level: getDefaultLogLevel()}
+
+		logger, err := logging.GetHandler(sink, opts)
+		if err != nil {
+			return err
+		}
+
+		a.L.Set(name, slog.New(logger))
+
+		return nil
 	}
 }
