@@ -167,8 +167,8 @@ github.com/ugorji/go/codec v1.2.12 h1:9LC83zGrHhuUA9l16C9AHXAqEV/2wBQ4nkvumAE65E
 github.com/ugorji/go/codec v1.2.12/go.mod h1:UNopzCgEMSXjBc6AOMqYvWC1ktqTAfzJZUZgYf6w6lg=
 github.com/wolftotem4/golangloader v0.9.1 h1:U9LBYQ8ARhPrHP7d0msZrCok7qHakbghCzbhcSzzJXQ=
 github.com/wolftotem4/golangloader v0.9.1/go.mod h1:gu2Zt5PAFkeFiEq5JryLvKADgMjoRnn2cBGNaJ0q3KM=
-github.com/wolftotem4/golava-core v0.1.8 h1:rB8Fw/TPWo9QpWJfKYeGyipo7f4FUNNMdfhVUp3ugEw=
-github.com/wolftotem4/golava-core v0.1.8/go.mod h1:fhIL6SjxZhPN4o6ete/eWatG6e42w5DSQqzZlDyfo+k=
+github.com/wolftotem4/golava-core v0.1.16 h1:CEU24UykBdsv03U8Coa+DG1rrH00dXBVugcJf4rV5lQ=
+github.com/wolftotem4/golava-core v0.1.16/go.mod h1:fhIL6SjxZhPN4o6ete/eWatG6e42w5DSQqzZlDyfo+k=
 github.com/wolftotem4/golava-db-sqlx v0.1.2 h1:UaslsicF5YuMMQ6CXFLxTEd7XIEuXjQhY+TEeZVbyfw=
 github.com/wolftotem4/golava-db-sqlx v0.1.2/go.mod h1:/GlZkiJmyM7JZYGR/13tyLNlpoGvdSwGxGbhkX5mVvo=
 github.com/xyproto/randomstring v1.0.5 h1:YtlWPoRdgMu3NZtP45drfy1GKoojuR7hmRcnhZqKjWU=

@@ -42,6 +42,6 @@ func SetEnvVar(content []byte, key, value, old string) (newcontent []byte, appen
 		newEnv := r.ReplaceAllString(env, fmt.Sprintf("%s=%s", key, value))
 		return []byte(newEnv), false
 	} else {
-		return []byte(fmt.Sprintf("\n%s=%s\n", key, value)), true
+		return fmt.Appendf(nil, "\n%s=%s\n", key, value), true
 	}
 }

@@ -5,10 +5,11 @@ import (
 	"os"
 
 	"github.com/wolftotem4/golava-core/cookie"
+	"github.com/wolftotem4/golava-core/encryption"
 	"github.com/wolftotem4/golava/internal/env"
 )
 
-func initCookie() *cookie.CookieManager {
+func InitCookie(encrypter encryption.IEncrypter) *cookie.CookieFactory {
 	path := os.Getenv("SESSION_PATH")
 	if path == "" {
 		path = "/"
@@ -26,10 +27,19 @@ func initCookie() *cookie.CookieManager {
 		sameSite = http.SameSiteDefaultMode
 	}
 
-	return &cookie.CookieManager{
-		Path:     path,
-		Domain:   os.Getenv("SESSION_DOMAIN"),
-		Secure:   env.Bool(os.Getenv("SESSION_SECURE_COOKIE")),
-		SameSite: sameSite,
+	domain := os.Getenv("SESSION_DOMAIN")
+	secure := env.Bool(os.Getenv("SESSION_SECURE_COOKIE"))
+
+	return &cookie.CookieFactory{
+		Manager: func() cookie.IEncryptableCookieManager {
+			manager := &cookie.CookieManager{
+				Path:     path,
+				Domain:   domain,
+				Secure:   secure,
+				SameSite: sameSite,
+			}
+
+			return cookie.NewEncryptableCookieManager(manager, encrypter)
+		},
 	}
 }

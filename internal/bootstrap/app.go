@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/jmoiron/sqlx"
-	"github.com/wolftotem4/golava-core/cookie"
 	"github.com/wolftotem4/golava-core/golava"
 	"github.com/wolftotem4/golava-core/hashing"
 	"github.com/wolftotem4/golava-core/routing"
@@ -46,33 +45,23 @@ func InitApp(ctx context.Context) (*app.App, error) {
 	db.SetMaxOpenConns(10)
 	db.SetMaxIdleConns(10)
 
-	session, err := initSession(db)
-	if err != nil {
-		return nil, err
-	}
-
 	translation, err := initTranslation(locale)
 	if err != nil {
 		return nil, err
 	}
 
-	hasher := hashing.NewHasherManager()
-	cookie := cookie.NewEncryptableCookieManager(initCookie(), encrypter)
-
 	return &app.App{
 		L:  logging.NewLoggerManager(),
 		DB: db,
 		App: golava.App{
-			Name:           os.Getenv("APP_NAME"),
-			Debug:          debug,
-			AppKey:         appKey,
-			Router:         router,
-			Cookie:         cookie,
-			Encryption:     encrypter,
-			Hashing:        hasher,
-			SessionFactory: session,
-			Translation:    translation,
-			AppLocale:      locale,
+			Name:        os.Getenv("APP_NAME"),
+			Debug:       debug,
+			AppKey:      appKey,
+			Router:      router,
+			Encryption:  encrypter,
+			Hashing:     hashing.NewHasherManager(),
+			Translation: translation,
+			AppLocale:   locale,
 		},
 	}, nil
 }

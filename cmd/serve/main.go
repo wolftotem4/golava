@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log/slog"
 	"os"
 
@@ -53,7 +54,9 @@ func main() {
 
 	routes.Register(r, app)
 
-	if err := r.Run(os.Getenv("LISTEN_ADDR")); err != nil {
+	listenAddr := os.Getenv("LISTEN_ADDR")
+	slog.InfoContext(ctx, fmt.Sprintf("Listening on %s...", listenAddr))
+	if err := r.Run(listenAddr); err != nil {
 		slog.ErrorContext(ctx, err.Error())
 	}
 }

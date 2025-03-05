@@ -8,14 +8,10 @@ import (
 	"github.com/wolftotem4/golava-core/auth"
 	"github.com/wolftotem4/golava-core/cookie"
 	"github.com/wolftotem4/golava-core/instance"
-	"github.com/wolftotem4/golava/internal/app"
 )
 
 func SubmitLogout(ctx *gin.Context) {
-	var (
-		i   = instance.MustGetInstance(ctx)
-		app = i.App.(*app.App)
-	)
+	var i = instance.MustGetInstance(ctx)
 
 	statefulGuard, ok := i.Auth.(auth.StatefulGuard)
 	if !ok {
@@ -32,7 +28,7 @@ func SubmitLogout(ctx *gin.Context) {
 	i.Session.Store.Invalidate(ctx)
 	i.Session.Store.RegenerateToken()
 
-	app.Cookie.Encryption().Set(
+	i.Cookie.Encryption().Set(
 		i.Session.GetMigrateName(),
 		i.Session.Store.ID,
 		cookie.WithMaxAge(int(i.Session.Lifetime)),

@@ -8,8 +8,13 @@ import (
 	"github.com/wolftotem4/golava-core/auth"
 	"github.com/wolftotem4/golava-core/instance"
 	t "github.com/wolftotem4/golava-core/template"
-	"github.com/wolftotem4/golava/internal/binding"
 )
+
+type LoginForm struct {
+	Username string `json:"username" form:"username" mod:"trim" binding:"required"`
+	Password string `json:"password" form:"password" binding:"required"`
+	Remember bool   `json:"remember" form:"remember"`
+}
 
 func Login(c *gin.Context) {
 	c.HTML(http.StatusOK, "home/login.tmpl", t.Default(c, t.PassFlash("alert-success", "alert-error")))
@@ -18,7 +23,7 @@ func Login(c *gin.Context) {
 func SubmitLogin(c *gin.Context) {
 	i := instance.MustGetInstance(c)
 
-	var form binding.Login
+	var form LoginForm
 	if err := c.ShouldBind(&form); err != nil {
 		i.Session.Store.FlashInput(form)
 		c.Error(err)

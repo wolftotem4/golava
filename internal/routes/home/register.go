@@ -9,8 +9,12 @@ import (
 	"github.com/wolftotem4/golava-core/instance"
 	t "github.com/wolftotem4/golava-core/template"
 	"github.com/wolftotem4/golava/internal/app"
-	"github.com/wolftotem4/golava/internal/binding"
 )
+
+type RegisterForm struct {
+	Username string `json:"username" form:"username" mod:"trim" binding:"required"`
+	Password string `json:"password" form:"password" binding:"required,min=8"`
+}
 
 func RegisterView(c *gin.Context) {
 	c.HTML(http.StatusOK, "home/register.tmpl", t.Default(c, t.PassFlash("alert-success", "alert-error")))
@@ -28,7 +32,7 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	var form binding.Register
+	var form RegisterForm
 	if err := c.ShouldBind(&form); err != nil {
 		i.Session.Store.FlashInput(form)
 		c.Error(err)

@@ -17,27 +17,28 @@ func WebAuth(c *gin.Context) {
 	)
 
 	var (
-		instance = instance.MustGetInstance(c)
-		app      = instance.App.(*app.App)
+		i = instance.MustGetInstance(c)
+		a = i.App.(*app.App)
 	)
 
 	guard := &generic.SessionGuard{
 		Name:             "app",
-		Session:          instance.Session,
-		Cookie:           app.Cookie,
-		Hasher:           app.Hashing,
+		Session:          i.Session,
+		Cookie:           i.Cookie,
+		Hasher:           a.Hashing,
 		RememberDuration: 400 * DAY,
 		Provider: &db.SqlxUserProvider{
-			Hasher:        app.Hashing,
+			Hasher:        a.Hashing,
 			Table:         "users",
-			DB:            app.DB,
+			DB:            a.DB,
 			ConstructUser: func() auth.Authenticatable { return &generic.User{} },
 		},
+		RecallerIdMorph: auth.IntId,
 
 		Request: c.Request,
 	}
 
-	instance.Auth = guard
+	i.Auth = guard
 
 	err := guard.RestoreAuth(c)
 	if err != nil {
